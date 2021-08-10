@@ -56,8 +56,6 @@ function login() {
             var token = result.token
             setCookie('token', token, 7)
             setCookie('user', email, 7)
-                //document.cookie = `token=${token};`
-                //document.cookie = `user=${email};`
             console.log(document.cookie);
             window.location = 'Index.html';
         },

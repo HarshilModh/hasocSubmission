@@ -59,10 +59,10 @@ async function submission() {
     let desc = `<textarea id="Desc" placeholder="Please enter your description" class="swal2-input mb-2" style="width:70%;height:30%" maxlength="150"></textarea>`
     let select_box_html = `<select id="subtask_name" class="swal2-input" style="width:70%;">
     <option value="1A_English">English Subtask A</option>
-    <option value="1A_Marathi">Marathi Subtask A</option>
     <option value="1B_English">English Subtask B</option>
     <option value="1A_Hindi">Hindi Subtask A</option>
     <option value="1B_Hindi">Hindi Subtask B</option>
+    <option value="1A_Marathi">Marathi Subtask A</option>
     <option value="2_ICHCL">Subtask 2</option></select>`
     Swal.fire({
         html: `${select_box_html}${submission_name}${desc}<input type="file" id="file" placeholder="Submission File">`,
@@ -99,9 +99,9 @@ async function submission() {
             var opt = sel.options[sel.selectedIndex];
             var tasks_name = opt.value;
             console.log(tasks_name);
-            var elements = document.cookie.split('=')
-            elem = JSON.parse(elements[1])
-            elements = elem.token
+            //var elements = document.cookie.split('=')
+            //elem = JSON.parse(elements[1])
+            //elements = elem.token
             if (input.files && input.files[0]) {
                 const formData = new FormData();
                 formData.append('file', input.files[0])
