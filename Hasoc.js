@@ -1,13 +1,25 @@
+function getCookie(name) {
+    var cookieArr = document.cookie.split(";");
+    for (var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        if (name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return null;
+}
+
 function check_token() {
-    var authtoken = document.cookie
-    console.log(authtoken);
-    if (authtoken.length == 0) {
+    //var authtoken = document.cookie
+    //console.log(authtoken);
+    if (getCookie('token') == null || getCookie('user') == null) {
         console.log("Inside Null");
         window.location = 'Login.html';
     } else {
         team_data_new()
     }
 }
+
 
 /*function set_task(td) {
     selectedRow = td.parentElement.parentElement;
@@ -59,10 +71,13 @@ async function submission() {
         customClass: 'swal-height-submission',
         preConfirm: () => {
             Swal.showLoading()
-            var elements = document.cookie.split('=')
-            elem = JSON.parse(elements[1])
-            elements = elem.token
-            var team_name = elem.user
+                //var elements = document.cookie.split('=')
+                //elem = JSON.parse(elements[1])
+                //elements = elem.token
+            var team_name = getCookie('user')
+            if (team_name == null) {
+                window.location = "Login.html"
+            }
             var des = document.getElementById("Desc").value
             var input = document.getElementById("file");
             var ex = document.getElementById("file").value;
@@ -99,7 +114,7 @@ async function submission() {
                         method: 'post',
                         body: formData,
                         headers: {
-                            "x-access-token": elements
+                            "x-access-token": getCookie('token')
                         }
                     })
                     .then(response => {
@@ -678,23 +693,23 @@ async function team_data_new() {
     sort_param = document.getElementById("sort_param").value;
     console.log(sort_param)
         //document.getElementById("Sorts").innerHTML = "Sort by timestamp descending"
-    var elements = document.cookie.split('=')
-    elem = JSON.parse(elements[1])
-    elements = elem.token
-    console.log(elem)
-    var team = elem.user
-    console.log(team)
+        //var elements = document.cookie.split('=')
+        //elem = JSON.parse(elements[1])
+        //elements = elem.token
+        //console.log(elem)
+        //var team = elem.user
+        //console.log(team)
         //console.log(team);
-    document.getElementById("navbarDropdownMenuLink").innerHTML = `Welcome ${team}`
+    document.getElementById("navbarDropdownMenuLink").innerHTML = `Welcome ${getCookie('user')}`
     $.ajax({
         type: 'POST',
         url: `https://hasocsubmission.el.r.appspot.com/dashboard/team_data/${sort_param}`,
         headers: {
-            "x-access-token": elements,
+            "x-access-token": getCookie('token'),
             'content-type': 'application/json'
         },
         data: JSON.stringify({
-            "team_name": team
+            "team_name": getCookie('user')
         }),
         success: function(result) {
             console.log(result);

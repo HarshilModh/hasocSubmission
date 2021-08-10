@@ -10,10 +10,20 @@ function validate() {
         document.getElementById("passerror").innerHTML = "Password Missing"
     } else {
         document.getElementById("passerror").innerHTML = ""
-
     }
+}
 
+function setCookie(name, value, daysToLive) {
+    // Encode value in order to escape semicolons, commas, and whitespace
+    var cookie = name + "=" + encodeURIComponent(value);
 
+    if (typeof daysToLive === "number") {
+        /* Sets the max-age attribute so that the cookie expires
+        after the specified number of days */
+        cookie += "; max-age=" + (daysToLive * 24 * 60 * 60);
+
+        document.cookie = cookie;
+    }
 }
 
 function deleteAllCookies() {
@@ -27,10 +37,8 @@ function deleteAllCookies() {
 }
 
 function login() {
-    //document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
     console.log("log in called")
     var email = document.getElementById("username").value
-        //localStorage.setItem("User", email);
     var password = document.getElementById("password").value
     console.log(email)
     console.log(password)
@@ -46,11 +54,10 @@ function login() {
         }),
         success: function(result) {
             var token = result.token
-            document.cookie = `myCookie=` + JSON.stringify({
-                    'token': token,
-                    'user': email
-                })
-                //`token=${token};user=${email}`;
+            setCookie('token', token, 7)
+            setCookie('user', email, 7)
+                //document.cookie = `token=${token};`
+                //document.cookie = `user=${email};`
             console.log(document.cookie);
             window.location = 'Index.html';
         },
@@ -68,10 +75,7 @@ function login() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Team does not exist',
-
                 })
-
-
             }
             if (jqXHR.status == 400) {
                 console.log(jqXHR.status);
@@ -79,10 +83,7 @@ function login() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Bad request',
-
                 })
-
-
             }
 
         }

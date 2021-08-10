@@ -31,9 +31,9 @@ function changepassword() {
     var new_password = document.getElementById("NewPassword").value
     var confirm_passowrd = document.getElementById("ConfirmPassword").value
     var elements = document.cookie.split('=')
-    elem = JSON.parse(elements[1])
-    elements = elem.token
-    var team = elem.user
+        //elem = JSON.parse(elements[1])
+        //elements = elem.token
+        //var team = elem.user
     console.log(password);
     console.log(new_password);
     console.log(confirm_passowrd);
@@ -42,11 +42,11 @@ function changepassword() {
             type: 'POST',
             url: "https://hasocsubmission.el.r.appspot.com/user/change_password",
             headers: {
-                "x-access-token": elements,
+                "x-access-token": getCookie('token'),
                 'content-type': 'application/json'
             },
             data: JSON.stringify({
-                "team_name": team,
+                "team_name": getCookie('user'),
                 "password": password,
                 "new_password": new_password
             }),
@@ -77,9 +77,9 @@ function changepassword() {
 }
 
 function check_token() {
-    var authtoken = document.cookie
-    console.log(authtoken);
-    if (authtoken.length == 0) {
+    //var authtoken = document.cookie
+    //console.log(authtoken);
+    if (getCookie('token' == null || getCookie('user') == null)) {
         console.log("Inside Null");
         window.location = 'Login.html';
     } else {
@@ -696,7 +696,7 @@ function leaderboard_table() {
     document.getElementById("zero_submission_div").setAttribute("hidden", true)
     console.log('hello')
         //var elements = document.cookie.split('=')
-    console.log(elements)
+        //console.log(elements)
     const urlParams = new URLSearchParams(window.location.search);
     task_name = urlParams.get('subtask_name')
     if (task_name == null) {
@@ -715,15 +715,13 @@ function leaderboard_table() {
     window.history.pushState({}, document.title, "" + "Leader_Board.html");
     var leaderboard_table = document.getElementById('leaderboard_table_body')
     var tab = ``
-    var elements = document.cookie.split('=')
-    elem = JSON.parse(elements[1])
-    elements = elem.token
-    document.getElementById("navbarDropdownMenuLink").innerHTML = `Welcome ${elem.user}`
+    var user = getCookie('user')
+    document.getElementById("navbarDropdownMenuLink").innerHTML = `Welcome ${user}`
     $.ajax({
         type: 'POST',
         url: "https://hasocsubmission.el.r.appspot.com/leaderboard",
         headers: {
-            "x-access-token": elements,
+            "x-access-token": getCookie('token'),
             'content-type': 'application/json'
         },
         data: JSON.stringify({
@@ -750,7 +748,7 @@ function leaderboard_table() {
                 "2_ICHCL": "Subtask 2"
             }
             for (var i = 0; i < result.length; i++) {
-                if (result[i].team_name == elem.user) {
+                if (result[i].team_name == user) {
                     tab += `<tr class="bg-info h5 text-white">
                     <td class="text-center align-middle"><h4>${i+1}</h4></td>
                     <td class="text-center align-middle">${result[i].team_name}</td>
